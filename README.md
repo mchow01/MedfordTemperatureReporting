@@ -1,4 +1,5 @@
 # Overview
+Allow relevant people to take temperature several times a day and text us their readings.
 
 # Database Table Creation
 `CREATE TABLE temperature_readings (
