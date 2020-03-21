@@ -7,7 +7,7 @@
  "main": "server.js",
  "repository": {
   "type": "git",
-  "url": "https://github.com/ashleygwilliams/my_package.git"
+  "url": "https://git.heroku.com/medford-temperature-reporting.git"
  },
  "dependencies": {
   "express": "latest",
