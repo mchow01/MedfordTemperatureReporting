@@ -10,7 +10,6 @@ const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 // Database connection
 const { Client } = require('pg');
-
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
@@ -31,9 +30,8 @@ app.post('/sms', (request, response) => {
             if (err) {
                 console.log(err.stack); // bad form?
             }
-            client.end();
         });
-        
+
         // Determine appropriate text message to send
         if (temperature >= 97.0 && temperature < 100.4) {
             responseTxtMsg += " Based on your temperature, you are good!";
