@@ -10,12 +10,31 @@ const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 app.post('/sms', (request, response) => {
     const twiml = new MessagingResponse();
-    const msgFrom = request.body.From;
-    const msgBody = request.body.Body;
-    twiml.message("Thanks for sending your temperature reading!");
+    const txtMsgFrom = request.body.From;
+    const txtMsgBody = request.body.Body;
+    var responseTxtMsg = "Thanks for sending your temperature reading!";
+
+    if (validator.isMobilePhone(txtMsgFrom) && validator.isFloat(txtMsgBody)) {
+        const temperature = parseFloat(txtMsgBody);
+        // Insert temperature reading into database
+
+        // Determine appropriate text message to send
+        if (temperature >= 97.0 && temperature < 100.4) {
+            responseTxtMsg += " Based on your temperature, you are good!";
+        }
+        else if (temperature >= 100.4) {
+            responseTxtMsg += " You have a fever and need medical attention.";
+        }
+        else if (temperature < 97.0) {
+            responseTxtMsg += " You may have hypothermia need medical attention.";
+        }
+    }
+    else {
+        responseTxtMsg += " Sorry, your temperature entry is invalid because it is not a temperature reading."
+    }
+    twiml.message(responseTxtMsg);
     response.writeHead(200, {'Content-Type': 'text/xml'});
     response.end(twiml.toString());
-    console.log(msgFrom + " " + msgBody);
     response.send();
 });
 
