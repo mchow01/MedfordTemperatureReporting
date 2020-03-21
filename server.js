@@ -8,6 +8,15 @@ app.use(bodyParser.urlencoded({ extended: true })); // meaning of extended: http
 const validator = require('validator');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
+// Database connection
+const { Client } = require('pg');
+
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
+});
+
+// For processing SMS message that goes to phone number (617) 207-6898
 app.post('/sms', (request, response) => {
     const twiml = new MessagingResponse();
     const txtMsgFrom = request.body.From;
@@ -17,7 +26,14 @@ app.post('/sms', (request, response) => {
     if (validator.isMobilePhone(txtMsgFrom) && validator.isFloat(txtMsgBody)) {
         const temperature = parseFloat(txtMsgBody);
         // Insert temperature reading into database
-
+        client.connect();
+        client.query('INSERT INTO temperature_readings (telephone_number, temperature) VALUES ($1, $2)', [txtMsgFrom, temperature], (err, res) => {
+            if (err) {
+                console.log(err.stack); // bad form?
+            }
+            client.end();
+        });
+        
         // Determine appropriate text message to send
         if (temperature >= 97.0 && temperature < 100.4) {
             responseTxtMsg += " Based on your temperature, you are good!";
