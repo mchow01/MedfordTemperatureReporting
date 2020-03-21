@@ -1,0 +1,19 @@
+{
+ "name": "medford_temperature_reporting",
+ "version": "1.0.0",
+ "description": "For relevant people (elderly, older than 75 years old) and ask them to take their temperature several times a day and text us their readings.",
+ "author": "Ming Chow <mchow@cs.tufts.edu>",
+ "license": "MIT",
+ "main": "server.js",
+ "repository": {
+  "type": "git",
+  "url": "https://github.com/ashleygwilliams/my_package.git"
+ },
+ "dependencies": {
+  "express": "latest",
+  "body-parser": "latest",
+  "pg": "latest",
+  "twilio": "latest",
+  "validator": "latest"
+ }
+}
