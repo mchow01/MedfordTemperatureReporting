@@ -15,6 +15,7 @@ const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
 });
+client.connect();
 
 // For processing SMS message that goes to phone number (617) 207-6898
 // twilio.webhook() is used to ensure incoming request came from Twilio and not anywhere else
@@ -28,7 +29,6 @@ app.post('/sms', twilio.webhook({protocol: 'https'}), (request, response) => {
     if (validator.isMobilePhone(txtMsgFrom) && validator.isFloat(txtMsgBody)) {
         const temperature = parseFloat(txtMsgBody);
         // Insert temperature reading into database
-        client.connect();
         client.query('INSERT INTO temperature_readings (telephone_number, temperature) VALUES ($1, $2)', [txtMsgFrom, temperature], (err, res) => {
             if (err) {
                 console.log(err.stack); // bad form?
