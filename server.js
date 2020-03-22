@@ -19,7 +19,7 @@ const client = new Client({
 // For processing SMS message that goes to phone number (617) 207-6898
 // twilio.webhook() is used to ensure incoming request came from Twilio and not anywhere else
 // Source: https://www.twilio.com/docs/usage/tutorials/how-to-secure-your-express-app-by-validating-incoming-twilio-requests
-app.post('/sms', twilio.webhook(), (request, response) => {
+app.post('/sms', twilio.webhook({protocol: 'https'}), (request, response) => {
     const twiml = new MessagingResponse();
     const txtMsgFrom = request.body.From;
     const txtMsgBody = request.body.Body;
